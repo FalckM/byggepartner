@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CartLink } from "@/components/shop/cart-link";
 import { ExpertToggle } from "@/components/shop/expert-toggle";
+import { TestBar } from "@/components/test/test-bar";
 
 export default function ShopLayout({ children }: LayoutProps<"/">) {
   return (
@@ -26,6 +27,7 @@ export default function ShopLayout({ children }: LayoutProps<"/">) {
           </nav>
         </div>
       </header>
+      <TestBar />
       <div className="flex-1">{children}</div>
       <footer className="border-t py-6 text-center text-xs text-muted-foreground no-print">
         Byggepartner er en studentprototype (IS-219, UiA). Priser, lagerstatus og ytelsestall er demo-data.

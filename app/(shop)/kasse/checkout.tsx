@@ -10,7 +10,8 @@ import { CreditCard, Loader2, Lock, ReceiptText, ShieldCheck, Wallet } from "luc
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { track } from "@/lib/analytics/track";
+import { flushNow, track } from "@/lib/analytics/track";
+import { useTestSession } from "@/lib/client/test-session";
 import { useCart, useCartHydrated } from "@/lib/client/cart-store";
 import { anonymousId } from "@/lib/client/safe-storage";
 import { formatNok } from "@/lib/engine/labels";
@@ -31,6 +32,8 @@ export function Checkout({ catalog }: { catalog: Catalog }) {
   const { items, needs, tier, clear } = useCart();
   const [error, setError] = useState<string | null>(null);
   const completed = useRef(false);
+  const testSession = useTestSession((s) => s.session);
+  const markCompleted = useTestSession((s) => s.markCompleted);
   const report = useMemo(
     () => validate(items, catalog, needs ? { includeOs: needs.includeOs, wantsWifi: !!needs.preferences.wifi, gaming: needs.uses.includes("GAMING") } : undefined),
     [items, catalog, needs],
@@ -39,7 +42,7 @@ export function Checkout({ catalog }: { catalog: Catalog }) {
 
   useEffect(() => {
     if (!hydrated) return;
-    track("checkout_started", { total: report.totalNok });
+    track("checkout_started", { total: report.totalNok, complete: report.ok });
     return () => {
       if (!completed.current) track("cart_abandoned", { from: "checkout" });
     };
@@ -73,6 +76,13 @@ export function Checkout({ catalog }: { catalog: Catalog }) {
     completed.current = true;
     track("checkout_completed", { orderId, total: report.totalNok });
     clear();
+    if (testSession) {
+      // Moderated test: the task is done – go straight to the confidence question (spec 11).
+      markCompleted(orderId);
+      await flushNow();
+      router.push("/test/avslutt");
+      return;
+    }
     router.push(`/bekreftelse/${orderId}`);
   }
 

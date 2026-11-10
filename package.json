@@ -21,7 +21,8 @@
     "format": "prettier --write .",
     "e2e": "playwright test",
     "seed:stress": "tsx scripts/seed-stress.ts",
-    "prebuild": "tsx scripts/seed-stress.ts"
+    "prebuild": "tsx scripts/seed-stress.ts",
+    "analytics:reset": "tsx scripts/reset-analytics.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

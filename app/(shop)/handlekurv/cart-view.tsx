@@ -39,11 +39,11 @@ export function CartView({ catalog }: { catalog: Catalog }) {
   const assembled = items.some((i) => i.componentId === ASSEMBLY_ID);
 
   useEffect(() => {
-    if (hydrated) track("cart_viewed", { items: items.length });
+    if (hydrated) track("cart_viewed", { items: items.length, complete: report.ok, missing: report.checklist.filter((i) => i.required && i.status !== "OK").length });
   }, [hydrated]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!hydrated || !items.length) return;
-    if (report.ok) track("cart_green_check_shown", {});
+    if (report.ok) track("cart_green_check_shown", { complete: true });
     else track("validation_error_shown", { where: "cart", rules: report.results.filter((r) => !r.passed && r.severity === "ERROR").map((r) => r.ruleId) });
   }, [hydrated, report.ok]); // eslint-disable-line react-hooks/exhaustive-deps
 

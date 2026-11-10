@@ -108,3 +108,15 @@ Admin-katalogen bruker native `<select>` i stedet for shadcn Select (Base UI): e
 - **`/oppgrader`:** eide deler velges fra katalogen per kategori. «Vet ikke» og fritekst regnes som *ikke eid*, slik at vi kan love kompatibilitet; skjemaet sier tydelig fra om dette. Kategorier som skal oppgraderes kjøpes nye. Strømforsyning og kjøler kan byttes hvis de er for svake (D12), og resultatsiden viser da en advarsel.
 - **Kompatibilitetskart (US-21):** `lib/engine/compatGraph.ts` (rent) kobler hver regel til et par kategorier. Kanten får verste status. SVG-et legger ledninger utenom andre noder og plasserer statusmerker med problemene først, så ✕ aldri skjules. Status vises med farge, ikon (✓ ! ✕) og strekmønster. Ledningene er tastaturknapper, og det finnes en listevisning.
 - **«Spør en PC-bygger» (US-19):** simulert chat med forhåndsskrevne svar generert fra pakken (`lib/engine/builderAnswers.ts`). Egne spørsmål får et standardsvar. Ingenting sendes.
+
+## D16 – Måling (fase 6)
+- **Hendelser** samles på klienten og sendes i batcher til `/api/events` (hvert 1,5 s, og med `sendBeacon` ved `pagehide`). Bare en anonym id (`localStorage`) og eventuell testøkt-id lagres. Ingen IP, user agent eller tredjeparter. Klientens klokke brukes til tidsmålinger, men tidspunkter som avviker mer enn ett døgn byttes ut med servertid.
+- **Rate-limit:** 300 hendelser per minutt per anonym id, i minnet (per serverinstans).
+- **Testøkter** kobles til hendelser bare mens økten pågår (`finishedAt = null`). Før avslutning ventes det på at alle hendelser er lagret (`flushNow`).
+- **«Aktør»** i metrikkene = testøkt hvis den finnes, ellers anonym besøkende.
+  - **H1:** median tid fra første `wizard_step_viewed` til første `package_viewed`, og median tid per veiviser-steg.
+  - **H2:** fullføringsandel blant aktører som så grønn hake, mot de som ikke gjorde det.
+  - **H3:** andel aktører der siste visning av handlekurven var komplett (`complete`-flagg i hendelsen), og antall «Legg til anbefalt».
+- **Fullført bestilling i testmodus** sender deltakeren rett til trygghetsspørsmålet (`/test/avslutt`) i stedet for ordrebekreftelsen.
+- **Admin og testmodus har ingen innlogging** (som spesifisert). Se D17 for beskyttelse ved deploy.
+- `pnpm analytics:reset` sletter hendelser og testøkter før en ekte testrunde. Den nekter å kjøre mot en ikke-lokal database uten `--yes-really`.

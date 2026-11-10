@@ -46,7 +46,7 @@ export function ScenarioRunner({ catalog, games, scenarios }: { catalog: Compone
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-auto rounded-lg border" tabIndex={0} role="region" aria-label="Scenarietabell">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr>

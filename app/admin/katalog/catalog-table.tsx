@@ -150,7 +150,7 @@ export function CatalogTable({
         Viser {rows.length} av {components.length} komponenter
       </p>
 
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-auto rounded-lg border" tabIndex={0} role="region" aria-label="Komponenttabell">
         <Table>
           <TableHeader>
             <TableRow>
