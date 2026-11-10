@@ -4,6 +4,8 @@ import { findJargon } from "../../lib/engine/explain";
 
 /** WCAG 2.2 AA – 0 serious/critical violations (spec 13). */
 export async function expectAccessible(page: Page, label: string) {
+  // Let React commit and the browser paint two frames so axe never measures a half-updated state.
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null)))));
   const res = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
   const bad = res.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
   expect(bad.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 3).join(" | ")}`), `axe on ${label}`).toEqual([]);

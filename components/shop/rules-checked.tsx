@@ -1,11 +1,14 @@
+"use client";
 // US-06 — «Se hva vi har sjekket»: every rule in plain words, with the result for this package.
 import { CheckCircle2, MinusCircle } from "lucide-react";
+import { useExpert } from "@/lib/client/prefs-store";
 import { RULE_EXPLANATION } from "@/lib/engine/explain";
 import type { ValidationReport } from "@/lib/engine/report";
 import { RULES } from "@/lib/engine/rules";
 import { SeverityIcon } from "./fit-status";
 
 export function RulesChecked({ report }: { report: ValidationReport }) {
+  const expert = useExpert();
   return (
     <ul className="grid gap-2 text-sm sm:grid-cols-2" data-testid="rules-checked">
       {RULES.map((rule) => {
@@ -26,6 +29,12 @@ export function RulesChecked({ report }: { report: ValidationReport }) {
                 {rs.length === 0 ? "Ikke aktuelt for denne pakken. " : ""}
                 {RULE_EXPLANATION[rule.id]}
               </span>
+              {expert &&
+                rs.map((r, i) => (
+                  <span key={i} className="mt-0.5 block font-mono text-[11px] text-muted-foreground">
+                    {rule.id}: {r.messageTechnical}
+                  </span>
+                ))}
             </span>
           </li>
         );

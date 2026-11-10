@@ -5,7 +5,9 @@ import Link from "next/link";
 import { ArrowRight, Hammer, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { AskBuilder } from "@/components/shop/ask-builder";
 import { ChecklistView } from "@/components/shop/checklist-view";
+import { CompatMap } from "@/components/shop/compat-map";
 import { FitStamp } from "@/components/shop/fit-status";
 import { PartsList } from "@/components/shop/parts-list";
 import { PowerMeter } from "@/components/shop/power-meter";
@@ -88,6 +90,12 @@ export function CartView({ catalog }: { catalog: Catalog }) {
             </h2>
             <PartsList items={parts} catalog={catalog} explain={explain} onSwap={(category, id) => setBrowse({ category, id })} onRemove={removeItem} />
           </section>
+          <details className="rounded-xl border bg-card p-4">
+            <summary className="cursor-pointer text-lg font-semibold">Se hvordan delene henger sammen</summary>
+            <div className="mt-4">
+              <CompatMap items={items} catalog={catalog} report={report} />
+            </div>
+          </details>
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
@@ -119,6 +127,8 @@ export function CartView({ catalog }: { catalog: Catalog }) {
               </>
             )}
           </div>
+
+          <AskBuilder items={items} catalog={catalog} report={report} needs={needs} />
 
           <label className="flex cursor-pointer items-start gap-3 rounded-2xl border bg-card p-4">
             <Switch checked={assembled} onCheckedChange={(on) => setAssembly(on)} aria-label="Vi bygger den for deg" className="mt-1" />

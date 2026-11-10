@@ -4,7 +4,9 @@ import { useState } from "react";
 import { ArrowLeftRight, ChevronDown, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics/track";
-import { CATEGORY_LABEL_PLAIN, STOCK_LABEL, formatNok } from "@/lib/engine/labels";
+import { useExpert } from "@/lib/client/prefs-store";
+import { specSummary } from "@/lib/catalog/specSummary";
+import { CATEGORY_LABEL, CATEGORY_LABEL_PLAIN, STOCK_LABEL, formatNok } from "@/lib/engine/labels";
 import type { BuildItem, Catalog, Category } from "@/lib/engine/types";
 import { cn } from "@/lib/utils";
 import { CategoryIcon } from "./category-icon";
@@ -29,6 +31,7 @@ export function PartsList({
   highlight?: Set<string>;
 }) {
   const [open, setOpen] = useState<string | null>(null);
+  const expert = useExpert();
   const byId = new Map(catalog.map((c) => [c.id, c]));
   const sorted = [...items].sort((a, b) => ORDER.indexOf(a.category) - ORDER.indexOf(b.category));
 
@@ -45,12 +48,17 @@ export function PartsList({
                 <CategoryIcon category={c.category} className="size-5" />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{CATEGORY_LABEL_PLAIN[c.category]}</p>
+                <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{expert ? CATEGORY_LABEL[c.category] : CATEGORY_LABEL_PLAIN[c.category]}</p>
                 <p className="font-medium" data-testid="part-name">
                   {c.name}
                   {item.qty > 1 && <span className="text-muted-foreground"> × {item.qty}</span>}
                 </p>
                 <p className="text-sm text-muted-foreground">{c.plainSummary}</p>
+                {expert && (
+                  <p className="mt-1 font-mono text-xs text-muted-foreground" data-testid="tech-specs">
+                    {specSummary(c)}
+                  </p>
+                )}
                 <div className="mt-2 flex flex-wrap items-center gap-x-1 gap-y-1">
                   <Button
                     variant="ghost"

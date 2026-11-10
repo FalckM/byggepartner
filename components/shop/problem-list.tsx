@@ -3,6 +3,7 @@
 import { Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics/track";
+import { useExpert } from "@/lib/client/prefs-store";
 import { catalogIndex } from "@/lib/engine/context";
 import { formatNok } from "@/lib/engine/labels";
 import type { RuleResult, ValidationReport } from "@/lib/engine/report";
@@ -16,7 +17,9 @@ export interface FixHandlers {
   onBrowse: (category: Category, replaceId?: string) => void;
 }
 
-export function ProblemList({ report, catalog, expert, ...h }: { report: ValidationReport; catalog: Catalog; expert?: boolean } & FixHandlers) {
+export function ProblemList({ report, catalog, expert: forceExpert, ...h }: { report: ValidationReport; catalog: Catalog; expert?: boolean } & FixHandlers) {
+  const expertPref = useExpert();
+  const expert = forceExpert || expertPref;
   const idx = catalogIndex(catalog);
   const errors = dedupe(report.results.filter((r) => !r.passed && r.severity === "ERROR"));
   const advice = dedupe(report.results.filter((r) => !r.passed && r.severity !== "ERROR"));

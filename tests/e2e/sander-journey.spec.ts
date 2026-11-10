@@ -23,6 +23,7 @@ test("Sander finds, adjusts and orders a PC", async ({ page }) => {
 
   await expect(page.getByText("Steg 3 av 5")).toBeVisible();
   await page.getByRole("checkbox", { name: /Counter-Strike 2/ }).check();
+  await expect(page.getByRole("button", { name: "Neste" })).toBeEnabled();
   await expectAccessible(page, "veiviser: spill");
   await page.getByRole("button", { name: "Neste" }).click();
 

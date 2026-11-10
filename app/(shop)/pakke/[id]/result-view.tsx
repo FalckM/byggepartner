@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Link2, PencilLine, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AskBuilder } from "@/components/shop/ask-builder";
+import { CompatMap } from "@/components/shop/compat-map";
 import { FitChip, FitStamp } from "@/components/shop/fit-status";
 import { FpsPanel } from "@/components/shop/fps-panel";
 import { PartsList } from "@/components/shop/parts-list";
@@ -166,6 +168,10 @@ export function ResultView({
         </Link>
       </header>
 
+      {needs?.existingParts?.some((p) => p.componentId) && (
+        <UpgradeNote needs={needs} items={items} catalog={catalog} />
+      )}
+
       {/* Tier cards */}
       <div role="radiogroup" aria-label="Velg pakke" className={cn("grid gap-4", tiers.length >= 3 ? "md:grid-cols-3" : "md:grid-cols-2")}>
         {tiers.map((t) => {
@@ -255,12 +261,19 @@ export function ResultView({
             }}
             highlight={new Set(report.results.filter((r) => !r.passed && r.severity === "ERROR").flatMap((r) => r.involved))}
           />
+          <details className="group rounded-xl border bg-card p-4" data-testid="map-details">
+            <summary className="cursor-pointer text-lg font-semibold">Se hvordan delene henger sammen</summary>
+            <div className="mt-4">
+              <CompatMap items={items} catalog={catalog} report={report} />
+            </div>
+          </details>
         </section>
         <aside className="space-y-4">
           <FitStamp report={report} totalRules={RULES.length} />
           <FpsPanel fps={fps} targetHz={needs?.targetHz ?? 60} />
           <PowerMeter power={report.power} />
-          <div className="rounded-xl border bg-card p-4">
+          <div className="space-y-2 rounded-xl border bg-card p-4">
+            <AskBuilder items={items} catalog={catalog} report={report} needs={needs} />
             <Button variant="outline" className="min-h-11 w-full" onClick={shareLink}>
               <Link2 aria-hidden /> Del eller lagre pakken
             </Button>
@@ -305,6 +318,26 @@ export function ResultView({
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** US-18 — Upgrade mode: what is kept, and a warning if the old PSU had to be replaced. */
+function UpgradeNote({ needs, items, catalog }: { needs: NeedsProfile; items: BuildItem[]; catalog: Catalog }) {
+  const ownedPsuId = needs.existingParts?.find((p) => p.category === "PSU")?.componentId;
+  const psuItem = items.find((i) => i.category === "PSU");
+  const replacedPsu = ownedPsuId && psuItem && !psuItem.owned ? catalog.find((c) => c.id === ownedPsuId) : undefined;
+  const kept = items.filter((i) => i.owned).length;
+  return (
+    <div className="space-y-2" data-testid="upgrade-note">
+      <p className="rounded-xl border bg-secondary p-3 text-sm text-secondary-foreground">
+        Oppgradering: {kept} deler du har fra før er merket «Har fra før». Vi har sjekket at de nye delene passer med dem, og du betaler bare for det nye.
+      </p>
+      {replacedPsu && (
+        <p role="note" className="rounded-xl border-2 border-warn bg-warn-soft p-3 text-sm" data-testid="psu-warning">
+          Strømforsyningen din ({replacedPsu.name}) er for svak eller mangler riktige kabler til det nye. Vi har derfor lagt inn en ny.
+        </p>
+      )}
     </div>
   );
 }

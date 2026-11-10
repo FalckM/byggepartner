@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CartLink } from "@/components/shop/cart-link";
+import { ExpertToggle } from "@/components/shop/expert-toggle";
 
 export default function ShopLayout({ children }: LayoutProps<"/">) {
   return (
@@ -11,12 +12,16 @@ export default function ShopLayout({ children }: LayoutProps<"/">) {
             <span className="font-heading text-lg font-semibold tracking-tight">Byggepartner</span>
           </Link>
           <nav aria-label="Hovedmeny" className="ml-auto flex items-center gap-1 text-sm">
-            <Link href="/veiviser" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted sm:inline-flex">
+            <Link href="/veiviser" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted lg:inline-flex">
               Hjelp meg å velge
             </Link>
-            <Link href="/bygg" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted sm:inline-flex">
+            <Link href="/bygg" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted lg:inline-flex">
               Bygg selv
             </Link>
+            <Link href="/oppgrader" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted lg:inline-flex">
+              Oppgrader
+            </Link>
+            <ExpertToggle />
             <CartLink />
           </nav>
         </div>

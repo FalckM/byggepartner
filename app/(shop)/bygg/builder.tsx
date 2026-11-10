@@ -13,7 +13,8 @@ import { SwapSheet } from "@/components/shop/swap-sheet";
 import { EXAMPLE_BUILD, MULTI, useBuilder, useBuilderHydrated } from "@/lib/client/builder-store";
 import { useCart } from "@/lib/client/cart-store";
 import { specSummary } from "@/lib/catalog/specSummary";
-import { compatibleAlternatives } from "@/lib/engine/alternatives";
+import { compatibleAlternatives, perfValue } from "@/lib/engine/alternatives";
+import { matchesQuery } from "@/lib/data/source";
 import { CATEGORY_LABEL, STOCK_LABEL, formatNok } from "@/lib/engine/labels";
 import { RULES } from "@/lib/engine/rules";
 import type { Catalog, Category } from "@/lib/engine/types";
@@ -29,6 +30,11 @@ export function Builder({ catalog }: { catalog: Catalog }) {
   const setPackage = useCart((s) => s.setPackage);
   const [tab, setTab] = useState<Category>("CPU");
   const [browse, setBrowse] = useState<{ category: Category; id?: string } | null>(null);
+  const [q, setQ] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [onlyFits, setOnlyFits] = useState(false);
+  const [inStock, setInStock] = useState(false);
+  const [sort, setSort] = useState<"price" | "perf">("price");
   const report = useMemo(() => validate(items, catalog, { includeOs: true }), [items, catalog]);
 
   const current = items.find((i) => i.category === tab && !MULTI.includes(tab));
@@ -39,8 +45,13 @@ export function Builder({ catalog }: { catalog: Catalog }) {
     return { bad, warn };
   }, [items, tab, catalog, current]);
 
-  const rows = catalog.filter((c) => c.category === tab).sort((a, b) => a.priceNok - b.priceNok);
   const chosen = new Set(items.map((i) => i.componentId));
+  const max = Number.parseInt(maxPrice, 10);
+  const rows = catalog
+    .filter((c) => matchesQuery(c, { category: tab, q: q || undefined, maxPrice: Number.isFinite(max) ? max : undefined }))
+    .filter((c) => !onlyFits || !status.bad.has(c.id) || chosen.has(c.id))
+    .filter((c) => !inStock || c.stock === "IN_STOCK" || c.stock === "LOW")
+    .sort((a, b) => (sort === "perf" ? (perfValue(b) ?? 0) - (perfValue(a) ?? 0) : 0) || a.priceNok - b.priceNok);
 
   if (!hydrated) return <p className="text-muted-foreground">Laster …</p>;
 
@@ -86,15 +97,46 @@ export function Builder({ catalog }: { catalog: Catalog }) {
             })}
           </div>
 
+          <div className="grid gap-3 rounded-xl border bg-card p-3 sm:grid-cols-2 lg:grid-cols-4" role="search" aria-label="Filtrer deler">
+            <div className="space-y-1">
+              <label htmlFor="b-q" className="text-xs font-medium text-muted-foreground">Søk</label>
+              <input id="b-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Navn eller modell" className="h-10 w-full rounded-lg border bg-background px-3 text-sm" />
+            </div>
+            <div className="space-y-1">
+              <label htmlFor="b-max" className="text-xs font-medium text-muted-foreground">Maks pris (kr)</label>
+              <input id="b-max" inputMode="numeric" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value.replace(/\D/g, ""))} className="h-10 w-full rounded-lg border bg-background px-3 text-sm" />
+            </div>
+            <div className="space-y-1">
+              <label htmlFor="b-sort" className="text-xs font-medium text-muted-foreground">Sortering</label>
+              <select id="b-sort" value={sort} onChange={(e) => setSort(e.target.value as "price" | "perf")} className="h-10 w-full rounded-lg border bg-background px-3 text-sm">
+                <option value="price">Pris – lav til høy</option>
+                <option value="perf">Ytelse / størrelse – høy til lav</option>
+              </select>
+            </div>
+            <div className="flex flex-col justify-end gap-1.5 text-sm">
+              <label className="flex items-center gap-2"><input type="checkbox" checked={onlyFits} onChange={(e) => setOnlyFits(e.target.checked)} className="size-4 accent-[var(--primary)]" /> Vis bare det som passer</label>
+              <label className="flex items-center gap-2"><input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="size-4 accent-[var(--primary)]" /> Bare på lager</label>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground" aria-live="polite">{rows.length} deler · {rows.filter((r) => status.bad.has(r.id)).length} passer ikke med det du har valgt</p>
+
           <div role="tabpanel" aria-label={CATEGORY_LABEL[tab]}>
           <ul className="divide-y rounded-xl border bg-card" data-testid="builder-list">
+            {rows.length === 0 && <li className="p-6 text-center text-sm text-muted-foreground">Ingen deler matcher filtrene.</li>}
             {rows.map((c) => {
               const reason = status.bad.get(c.id);
               const warning = status.warn.get(c.id);
               const isChosen = chosen.has(c.id);
               const out = c.stock === "OUT";
               return (
-                <li key={c.id} className={cn("flex flex-wrap items-center gap-3 p-3", reason && !isChosen && "bg-muted/70 [&_.font-medium]:text-muted-foreground")} data-testid="builder-row" data-id={c.id}>
+                <li
+                  key={c.id}
+                  title={reason && !isChosen ? `Passer ikke: ${reason}` : undefined}
+                  className={cn("flex flex-wrap items-center gap-3 p-3", reason && !isChosen && "bg-muted/70 [&_.font-medium]:text-muted-foreground")}
+                  data-testid="builder-row"
+                  data-id={c.id}
+                  data-fits={!reason}
+                >
                   <div className="min-w-0 flex-1 basis-64">
                     <p className="font-medium">{c.name}</p>
                     <p className="text-xs text-muted-foreground">{specSummary(c)}</p>
