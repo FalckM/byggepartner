@@ -1,0 +1,6 @@
+lib/generated
+pnpm-lock.yaml
+seed/**/*.json
+.agents
+.claude
+.windsurf
