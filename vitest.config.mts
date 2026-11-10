@@ -16,6 +16,11 @@ export default defineConfig({
       provider: "v8",
       include: ["lib/engine/**/*.ts"],
       reporter: ["text", "html"],
+      // Phase 2 gate: ≥ 95 % line coverage on the rules; the whole engine stays high too.
+      thresholds: {
+        "lib/engine/rules/**": { lines: 95, functions: 95 },
+        "lib/engine/**": { lines: 90 },
+      },
     },
   },
 });

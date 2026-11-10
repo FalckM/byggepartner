@@ -49,3 +49,18 @@ For å verifisere fase 1-porten («lister alle komponenter med filtrering») i e
 
 ## D09 – Skjemaer ved admin-filtre
 Admin-katalogen bruker native `<select>` i stedet for shadcn Select (Base UI): enklere, fullt tilgjengelig og fungerer med Playwrights `selectOption`.
+
+## D10 – Tolkninger i regelmotoren (fase 2)
+- **`validate(items, catalog, options?)`** har en valgfri tredje parameter (`includeOs`, `wantsWifi`, `gaming`), fordi sjekklisten (7.4) avhenger av kundens behov. Standard: `includeOs = true`.
+- **`ok`** = 0 feilede ERROR **og** alle *påkrevde* sjekklisteposter er ✅. WARNING og INFO blokkerer aldri.
+- **Kjølepasta (R18)** er INFO som regel, men en *påkrevd* sjekklistepost når kjøleren mangler pasta. Uten pasta blir pakken ufullstendig (DP3).
+- **R00_UNKNOWN_COMPONENT** (ekstra): ukjent id eller feil kategori i handlekurven gir ERROR, så en manipulert handlekurv aldri kan gi grønn hake.
+- **R11 og adapter:** et 12V-2x6-kort på en strømforsyning uten 12V-2x6 er WARNING hvis strømforsyningen har nok 8-pin til adapteren som følger med kortet (én per 150 W, minst to), ellers ERROR.
+- **R09** sjekker både format (ATX/SFX) og lengde. SFX i et rent ATX-kabinett regnes som feil (krever brakett vi ikke selger).
+- **R14:** 2,5"-SSD kan bruke ledige 3,5"-brønner. Antall SATA-strømkontakter på strømforsyningen sjekkes også.
+- **R16** hoppes over når sokkelen ikke matcher (R01 tar det), for å unngå doble, forvirrende meldinger.
+- **R10:** margin = (PSU − last) / last. «Strømforsyningen har nok kraft, med 35 % margin».
+- **Fiks-kandidater** (`fixSuggestion.candidateIds`) er kontrollert slik at byttet faktisk fjerner feilen. De sorteres etter færrest advarsler og nærmest pris (likeverdig bytte).
+- **«Legg til anbefalt»** i sjekklisten foreslår bare deler som ikke skaper nye mangler (f.eks. ikke en kjøler som så trenger pasta).
+- **`compatibleAlternatives`** sorterer etter (a) ytelse per krone, der kategorien har et ytelsesmål, ellers (b) pris. Kandidater med advarsler kommer sist. Utsolgte vises i «Passer ikke» med grunnen «Utsolgt».
+- **`rulesChecked`** teller reglene som faktisk var relevante for pakken. UI-teksten «vi har sjekket 19 ting» bruker `RULES.length`.

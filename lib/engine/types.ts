@@ -184,6 +184,8 @@ export const AccessoryKindSchema = z.enum([
   "ASSEMBLY_SERVICE",
 ]);
 
+export type AccessoryKind = z.infer<typeof AccessoryKindSchema>;
+
 export const AccessorySpecsSchema = z.object({
   kind: AccessoryKindSchema,
   description: z.string().min(1),
@@ -289,6 +291,8 @@ export type BuildItems = readonly BuildItem[];
 
 // ─── Scenarios (10.3) ─────────────────────────────────────────────────────
 
+export const ChecklistKeySchema = z.enum([...CATEGORIES, "THERMAL_PASTE", "WIFI"]);
+
 export const ScenarioSchema = z.object({
   id: z.string().regex(/^S\d{2}$/),
   basedOn: z.string(),
@@ -303,8 +307,8 @@ export const ScenarioSchema = z.object({
     recommendedMaxNok: z.number().int().optional(),
     errorRules: z.array(z.string()).optional(),
     warningRules: z.array(z.string()).optional(),
-    checklistMissing: z.array(CategorySchema).optional(),
-    checklistPresent: z.array(CategorySchema).optional(),
+    checklistMissing: z.array(ChecklistKeySchema).optional(),
+    checklistPresent: z.array(ChecklistKeySchema).optional(),
     reason: z.literal("BUDGET_TOO_LOW").optional(),
     minFps: z.array(z.object({ game: z.string(), resolution: ResolutionSchema, fps: posInt })).optional(),
     hasFixSuggestion: z.boolean().optional(),
