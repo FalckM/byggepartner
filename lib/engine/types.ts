@@ -154,8 +154,7 @@ export const CaseSpecsSchema = z.object({
   color: ColorSchema.default("BLACK"),
 });
 
-export const CoolerSpecsSchema = z
-  .object({
+export const CoolerSpecsBaseSchema = z.object({
     type: z.enum(["AIR", "AIO"]),
     supportedSockets: z.array(SocketSchema).min(1),
     heightMm: posInt.optional(),
@@ -166,10 +165,11 @@ export const CoolerSpecsSchema = z
     overhangsRam: z.boolean().default(false),
     rgb: z.boolean().default(false),
     color: ColorSchema.default("BLACK"),
-  })
-  .refine((c) => (c.type === "AIR" ? c.heightMm !== undefined : c.radiatorMm !== undefined), {
-    message: "AIR coolers need heightMm, AIO coolers need radiatorMm",
-  });
+});
+export const CoolerSpecsSchema = CoolerSpecsBaseSchema.refine(
+  (c) => (c.type === "AIR" ? c.heightMm !== undefined : c.radiatorMm !== undefined),
+  { message: "AIR coolers need heightMm, AIO coolers need radiatorMm" },
+);
 
 export const OsSpecsSchema = z.object({
   name: z.string().min(1),
@@ -222,6 +222,20 @@ export const ComponentSchema = z.discriminatedUnion("category", [
 ]);
 export type Component = z.infer<typeof ComponentSchema>;
 export type ComponentInput = z.input<typeof ComponentSchema>;
+
+/** Plain object spec schemas per category (no refinements) – importers use `.partial()` on these. */
+export const SPEC_SCHEMAS = {
+  CPU: CpuSpecsSchema,
+  MOTHERBOARD: MotherboardSpecsSchema,
+  RAM: RamSpecsSchema,
+  GPU: GpuSpecsSchema,
+  STORAGE: StorageSpecsSchema,
+  PSU: PsuSpecsSchema,
+  CASE: CaseSpecsSchema,
+  COOLER: CoolerSpecsBaseSchema,
+  OS: OsSpecsSchema,
+  ACCESSORY: AccessorySpecsSchema,
+} as const;
 
 /** Narrow a Component to a specific category. */
 export type ComponentOf<C extends Category> = Extract<Component, { category: C }>;

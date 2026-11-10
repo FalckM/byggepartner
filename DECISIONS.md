@@ -118,5 +118,16 @@ Admin-katalogen bruker native `<select>` i stedet for shadcn Select (Base UI): e
   - **H2:** fullføringsandel blant aktører som så grønn hake, mot de som ikke gjorde det.
   - **H3:** andel aktører der siste visning av handlekurven var komplett (`complete`-flagg i hendelsen), og antall «Legg til anbefalt».
 - **Fullført bestilling i testmodus** sender deltakeren rett til trygghetsspørsmålet (`/test/avslutt`) i stedet for ordrebekreftelsen.
-- **Admin og testmodus har ingen innlogging** (som spesifisert). Se D17 for beskyttelse ved deploy.
+- **Admin og testmodus har ingen innlogging** (som spesifisert). Det må vurderes før offentlig deploy (f.eks. Basic Auth via `ADMIN_PASSWORD`).
 - `pnpm analytics:reset` sletter hendelser og testøkter før en ekte testrunde. Den nekter å kjøre mot en ikke-lokal database uten `--yes-really`.
+
+## D17 – Import av eksterne data (fase 7, del 1 – kjøres lokalt, deploy utsatt)
+- **Datasett verifisert 2026-11-10:** [`docyx/pc-part-dataset`](https://github.com/docyx/pc-part-dataset), **MIT-lisens, © 2021-2025 Doc Oliver**, skrapet fra PCPartPicker, sist oppdatert juli 2025. Vi henter `data/json/<kategori>.json` fra `main` på forespørsel, cacher dem 30 min i minnet og lagrer bare det som importeres.
+- **Funn:** datasettet mangler nesten alle felt kompatibilitetsreglene trenger. Det finnes ikke sokkel/minnestøtte for CPU, strøm/kontakter/ytelse for skjermkort, GPU-/kjølerklaring for kabinett, sokler/høyde/kapasitet for kjøler, høyde for RAM, eller kontakter/lengde for strømforsyning. En prøve med 20 rader per kategori gav **12 komplette (bare OS-lisenser), 160 ufullstendige og 0 feil**. Dette støtter Oppgave 3, 3.6: en kompatibilitetsgaranti krever kvalitetssikrede produktdata som Multicom selv må eie.
+- **Ufullstendige rader** lagres med `incompleteForValidation: true` og delvise spesifikasjoner. De filtreres bort allerede i databasespørringen (`prismaSource`), så motor, generator, kundeflyt og API aldri ser dem. Admin viser dem i en egen seksjon.
+- **Komplette importer** blir vanlige katalogdeler, slik spesifikasjonen sier. Importerte deler får `stock: ORDER` og 7 dagers levering (ukjent tilgjengelighet). Seed-delene kan aldri overskrives.
+- **Priser:** USD × 10,8 (fast demo-kurs) × 1,25 mva, rundet til «…9 kr». Rader uten pris hoppes over.
+- **Varianter:** PCPartPicker gjenbruker navn («Samsung 990 Pro» i flere kapasiteter, samme RAM i flere hastigheter og farger). Id og navn får derfor variantinfo (kapasitet, brikke, hastighet, farge), og en deterministisk `-2`/`-3`-reserve fanger resten.
+- **CSV:** én rad per del, med faste kolonner og `spec.*`-kolonner (nøstet med punktum, lister med «|», `-` = tom liste, «ja/nei» og norsk desimalkomma støttes). Både `,` og `;` oppdages automatisk, og Excel-BOM håndteres. Malen `GET /api/admin/import/template` er laget fra den ekte katalogen og testes for rundtur: hele seed-katalogen → CSV → import gir identiske deler.
+- **Commit kjører normaliseringen på nytt på serveren** med samme input som forhåndsvisningen. Klienten kan ikke sende ferdige komponenter.
+- **Ikke gjort:** skraping av Multicom.no eller andre nettbutikker (spec 10.2.3). BuildCores OpenDB er ikke vurdert ennå.

@@ -184,7 +184,10 @@ export function CatalogTable({
                     <TableCell className="whitespace-nowrap">{CATEGORY_LABEL[c.category]}</TableCell>
                     <TableCell>
                       <span className="font-medium">{c.name}</span>
-                      <span className="block font-mono text-xs text-muted-foreground">{c.id}</span>
+                      <span className="block font-mono text-xs text-muted-foreground">
+                        {c.id}
+                        {c.source !== "seed" && <span className="ml-2 rounded bg-secondary px-1.5 py-0.5 font-sans text-secondary-foreground">{c.source}</span>}
+                      </span>
                     </TableCell>
                     <TableCell className="text-right whitespace-nowrap tabular-nums">
                       {formatNok(c.priceNok)}
