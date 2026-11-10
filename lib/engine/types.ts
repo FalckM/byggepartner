@@ -285,6 +285,8 @@ export const BuildItemSchema = z.object({
   category: CategorySchema,
   componentId: z.string().min(1),
   qty: posInt.default(1),
+  /** Upgrade mode (US-18): the customer already owns this part – not charged. */
+  owned: z.boolean().optional(),
 });
 export type BuildItem = z.infer<typeof BuildItemSchema>;
 export type BuildItems = readonly BuildItem[];

@@ -5,6 +5,8 @@ import { Wrench } from "lucide-react";
 const NAV = [
   { href: "/admin", label: "Oversikt" },
   { href: "/admin/katalog", label: "Katalog" },
+  { href: "/admin/scenarier", label: "Scenarier" },
+  { href: "/admin/stresstest", label: "Stresstest" },
 ] as const;
 
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {

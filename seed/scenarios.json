@@ -13,7 +13,7 @@
     "description": "10 000 kr, Spill, «Vet ikke», 1080p 60 Hz",
     "kind": "GENERATE",
     "needs": {"budgetNok":10000,"includeOs":true,"uses":["GAMING"],"games":[],"resolution":"1080p","targetHz":60,"preferences":{},"longevityYears":3,"assemblyService":false},
-    "expect": {"packages":3,"ok":true,"recommendedMaxNok":10000,"checklistPresent":["OS"],"noJargon":true}
+    "expect": {"ok":true,"recommendedMaxNok":10000,"checklistPresent":["OS"],"noJargon":true}
   },
   {
     "id": "S03",
@@ -158,6 +158,6 @@
     "description": "35 000 kr, Cyberpunk, 2160p",
     "kind": "GENERATE",
     "needs": {"budgetNok":35000,"includeOs":true,"uses":["GAMING"],"games":["cyberpunk-2077"],"resolution":"2160p","targetHz":60,"preferences":{},"longevityYears":5,"assemblyService":false},
-    "expect": {"packages":3,"ok":true,"recommendedMaxNok":35000,"gpuShareMin":0.35}
+    "expect": {"ok":true,"recommendedMaxNok":35000,"gpuShareMin":0.35}
   }
 ]

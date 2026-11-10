@@ -16,10 +16,6 @@ describe("validation scenarios", () => {
     expect(run.status).toBe("PASS");
   });
 
-  it("marks generator scenarios as pending until phase 3", () => {
-    expect(runScenario(scenarios.find((x) => x.id === "S01")!, seed).status).toBe("PENDING");
-  });
-
   it("reports FAIL when expectations are not met", () => {
     const s: Scenario = { ...scenarios.find((x) => x.id === "S06")!, expect: { ok: true, errorRules: ["R03_GPU_LENGTH"], warningRules: ["R16_BIOS"], checklistMissing: ["CPU" as const], checklistPresent: ["WIFI" as const], hasFixSuggestion: true } };
     const run = runScenario(s, seed);

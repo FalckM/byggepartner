@@ -88,6 +88,11 @@ export function buildContext(items: BuildItems, catalog: Catalog, options?: Vali
   return ctx;
 }
 
+/** Price of everything the customer must buy (owned parts in upgrade mode are free). */
 export function totalNok(ctx: BuildContext): number {
-  return ctx.all.reduce((sum, c) => sum + c.priceNok, 0);
+  const idx = catalogIndex(ctx.catalog);
+  return ctx.items.reduce((sum, i) => {
+    const c = idx.get(i.componentId);
+    return i.owned || !c || c.category !== i.category ? sum : sum + c.priceNok * Math.max(1, i.qty ?? 1);
+  }, 0);
 }

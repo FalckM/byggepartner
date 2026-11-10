@@ -19,7 +19,9 @@
     "db:generate": "prisma generate",
     "postinstall": "prisma generate",
     "format": "prettier --write .",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "seed:stress": "tsx scripts/seed-stress.ts",
+    "prebuild": "tsx scripts/seed-stress.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -47,6 +49,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
+    "@faker-js/faker": "^10.6.0",
     "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/node": "^24.19.2",
