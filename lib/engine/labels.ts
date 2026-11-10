@@ -41,3 +41,8 @@ const nok = new Intl.NumberFormat("nb-NO", { maximumFractionDigits: 0 });
 export function formatNok(value: number): string {
   return `${nok.format(value)} kr`;
 }
+
+/** «1 dag» / «3 dager» */
+export function formatDays(n: number): string {
+  return `${n} ${n === 1 ? "dag" : "dager"}`;
+}

@@ -8,7 +8,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
-  use: { baseURL: `http://localhost:${PORT}`, trace: "retain-on-failure" },
+  // Reduced motion: axe must not measure colours mid-transition; also mirrors users who ask for it.
+  use: { baseURL: `http://localhost:${PORT}`, trace: "retain-on-failure", contextOptions: { reducedMotion: "reduce" } },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },

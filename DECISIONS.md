@@ -91,3 +91,13 @@ Admin-katalogen bruker native `<select>` i stedet for shadcn Select (Base UI): e
 
 ## D13 – Stresskatalog
 `pnpm seed:stress` lager 1 991 syntetiske komponenter (faker, `seed(219)`) pluss OS og tilbehør fra seed-katalogen, til sammen 2 000. Katalogen skrives til `public/stress/catalog.json` (genereres også ved `prebuild`) og lastes **ikke** inn i databasen, så den ikke blandes med kundekatalogen. `/admin/stresstest` kjører generatoren i nettleseren. Testprofilene er deterministiske (mulberry32, seed 219).
+
+## D14 – Kundeflyten (fase 4)
+- **Visuell profil «arbeidsbenk og tegning»:** varmt papirhvitt og blekkblått, med et svakt arbeidstegningsrutenett på forsiden. Bricolage Grotesque til overskrifter, Geist til brødtekst. Grønt brukes **bare** for «passer»: chip, stempel og sertifikat. Rødt brukes bare for blokkerende feil, gult for råd. Fargen er aldri eneste signal; ikon og tekst følger alltid med.
+- **`/pakke/[id]`:** kunden kommer til en lagret pakke (Build med behov). De tre nivåene **regenereres** fra behovene, siden generatoren er deterministisk, så delte lenker viser det samme. En delt, endret pakke vises som «Lagret pakke».
+- **Validering, FPS og forklaringer** kjøres i nettleseren (samme motor) ved hvert bytte. Serveren validerer på nytt ved bestilling (`/api/orders` gir 422 hvis pakken ikke er `ok`).
+- **Handlekurven** er Zustand og `localStorage` med try/catch. Montering er en egen vare (`acc-assembly-service`), slått av og på med en bryter.
+- **Kassen** sender ingen navn eller adresse noen steder. Bare pakke-id og anonym id lagres (Order og Build).
+- **`/bygg`** er laget allerede i fase 4 fordi E2E «RESP-04» (fase 4-porten) foregår der. Deler som ikke passer er gråtonet med grunnen, men kan velges («Velg likevel») slik at kunden ser konflikten og kan fikse den med ett klikk. Ekspertmodus og filtre kommer i fase 5.
+- **Hendelser** (`track()`) er lagt inn på alle steder fra kap. 11, men bufres i minnet til `/api/events` lages i fase 6.
+- **Testteknikk:** Next 16 holder tidligere ruter montert men skjult (React Activity). E2E-tester avgrenses derfor til `getByRole("main")`, og skuffen finnes via `getByRole("dialog")`. Playwright kjører med `reducedMotion: "reduce"`, så axe ikke måler farger midt i en overgang.
