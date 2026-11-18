@@ -66,7 +66,7 @@ export function SwapSheet({
                   <button
                     type="button"
                     onClick={() => onSwap({ category, componentId: c.component.id, qty: 1 })}
-                    className="group flex w-full items-start gap-3 rounded-xl border bg-card p-3 text-left transition hover:border-primary hover:shadow-sm"
+                    className="group flex w-full items-start gap-3 rounded-xl border bg-card p-3 text-left transition hover:shadow-sm"
                     data-testid="swap-option"
                     data-id={c.component.id}
                   >

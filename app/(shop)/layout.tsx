@@ -1,35 +1,28 @@
 import Link from "next/link";
 import { CartLink } from "@/components/shop/cart-link";
+import { MainNav } from "@/components/shop/main-nav";
 import { ExpertToggle } from "@/components/shop/expert-toggle";
 import { TestBar } from "@/components/test/test-bar";
 
 export default function ShopLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="flex flex-1 flex-col">
-      <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur no-print">
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-2.5">
-          <Link href="/" className="flex min-h-11 items-center gap-2.5" aria-label="Byggepartner – til forsiden">
+      <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur no-print">
+        <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-4 pt-3 lg:h-20 lg:pt-0 lg:grid-cols-[1fr_auto_1fr] lg:px-6 lg:py-0">
+          <Link href="/" className="flex min-h-11 items-center gap-2.5 justify-self-start" aria-label="Byggepartner – til forsiden">
             <Logo />
-            <span className="font-heading text-lg font-semibold tracking-tight">Byggepartner</span>
+            <span className="text-lg font-bold tracking-tight text-primary">byggepartner</span>
           </Link>
-          <nav aria-label="Hovedmeny" className="ml-auto flex items-center gap-1 text-sm">
-            <Link href="/veiviser" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted lg:inline-flex">
-              Hjelp meg å velge
-            </Link>
-            <Link href="/bygg" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted lg:inline-flex">
-              Bygg selv
-            </Link>
-            <Link href="/oppgrader" className="hidden min-h-11 items-center rounded-full px-3 hover:bg-muted lg:inline-flex">
-              Oppgrader
-            </Link>
+          <MainNav className="order-last col-span-2 -mx-4 overflow-x-auto border-t px-2 lg:order-none lg:col-span-1 lg:mx-0 lg:border-0 lg:px-0" />
+          <div className="flex items-center gap-1 justify-self-end text-sm">
             <ExpertToggle />
             <CartLink />
-          </nav>
+          </div>
         </div>
       </header>
       <TestBar />
       <div className="flex-1">{children}</div>
-      <footer className="border-t py-6 text-center text-xs text-muted-foreground no-print">
+      <footer className="border-t py-8 text-center text-[13px] text-muted-foreground no-print">
         Byggepartner er en studentprototype (IS-219, UiA). Priser, lagerstatus og ytelsestall er demo-data.
       </footer>
     </div>

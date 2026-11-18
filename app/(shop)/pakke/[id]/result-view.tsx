@@ -154,7 +154,7 @@ export function ResultView({
     <div className="space-y-8 pb-28">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold sm:text-4xl">{packages.length ? "PC-ene vi har satt sammen til deg" : "Pakken din"}</h1>
+          <h1 className="text-[28px] leading-tight font-bold">{packages.length ? "PC-ene vi har satt sammen til deg" : "Pakken din"}</h1>
           {needs && (
             <p className="mt-2 text-muted-foreground">
               Budsjett {formatNok(needs.budgetNok)} · {needs.uses.map((u) => USE_LABEL[u]).join(", ") || "generell bruk"}
@@ -163,7 +163,7 @@ export function ResultView({
             </p>
           )}
         </div>
-        <Link href="/veiviser" className="inline-flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 text-sm font-medium hover:border-primary">
+        <Link href="/veiviser" className="inline-flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 text-sm font-medium transition-shadow hover:shadow-sm">
           <PencilLine aria-hidden className="size-4" /> Endre svarene
         </Link>
       </header>
@@ -195,7 +195,7 @@ export function ResultView({
               }}
               className={cn(
                 "relative flex flex-col gap-3 rounded-2xl border-2 bg-card p-5 text-left transition",
-                selected ? "border-primary shadow-[0_12px_40px_-18px_oklch(0.42_0.12_258/0.6)]" : "border-border hover:border-primary/50",
+                selected ? "border-foreground shadow-sm ring-1 ring-foreground" : "border-border hover:shadow-sm",
                 t === "RECOMMENDED" && "md:-translate-y-2",
               )}
             >

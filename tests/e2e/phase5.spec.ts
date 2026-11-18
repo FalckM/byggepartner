@@ -84,19 +84,22 @@ test("«Spør en PC-bygger» answers based on the cart (US-19)", async ({ page, 
   await expectAccessible(page, "spør en PC-bygger");
 });
 
-test("/bygg filter «Vis bare det som passer» hides parts that do not fit", async ({ page }) => {
+test("/bygg goes one part at a time and hides parts that do not fit", async ({ page }) => {
   await page.goto("/bygg");
-  await main(page).getByRole("button", { name: "Start fra et eksempel" }).click();
-  await main(page).getByRole("tab", { name: /Skjermkort/ }).click();
-  await main(page).getByRole("button", { name: /Kraftverk GeForce RTX 5070 Ti Titan OC/ }).click();
-  await main(page).getByRole("tab", { name: /Kabinett/ }).click();
-  const m1 = main(page).locator('[data-testid="builder-row"][data-id="case-compact-m1-matx"]');
-  await expect(m1).toHaveAttribute("data-fits", "false");
-  await main(page).getByLabel("Vis bare det som passer").check();
-  await expect(m1).toHaveCount(0);
-  await expect(main(page).locator('[data-testid="builder-row"][data-fits="false"]')).toHaveCount(0);
-  await main(page).getByLabel("Maks pris (kr)").fill("800");
-  for (const price of await main(page).locator('[data-testid="builder-row"] .tabular-nums').allInnerTexts()) {
-    expect(Number(price.replace(/\D/g, ""))).toBeLessThanOrEqual(800);
-  }
+  await main(page).getByRole("button", { name: "Tøm" }).click();
+  await expect(main(page).getByRole("heading", { name: "Velg prosessor" })).toBeVisible();
+  await expect(main(page).getByText("Steg 1 av 10")).toBeVisible();
+  await expectNoJargon(page, "bygg: prosessor");
+
+  // Picking a part fills it in the drawing and moves on to the next step.
+  await main(page).locator('[data-testid="builder-row"]').first().getByRole("button", { name: /^Velg / }).click();
+  await expect(main(page).getByRole("heading", { name: "Velg hovedkort" })).toBeFocused();
+  await expect(main(page).locator('.pc-part[data-category="CPU"][data-state="filled"]').last()).toBeAttached();
+
+  // Only parts that fit are listed; the rest sit behind a closed «Passer ikke» section.
+  await expect(main(page).locator('[data-testid="builder-list"] [data-fits="false"]')).toHaveCount(0);
+  const nofit = main(page).getByTestId("builder-nofit");
+  await expect(nofit).not.toHaveAttribute("open", "");
+  await expect(nofit.locator('[data-testid="builder-row"]').first()).toBeHidden();
+  await expectAccessible(page, "bygg: hovedkort");
 });

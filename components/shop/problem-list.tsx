@@ -51,7 +51,7 @@ export function ProblemList({ report, catalog, expert: forceExpert, ...h }: { re
             }}
           >
             <Wrench aria-hidden /> {fix.action === "ADD" ? "Legg til" : "Bytt til"} {first.name}
-            <span className="font-normal opacity-80">
+            <span className="font-normal">
               ({first.priceNok - curPrice >= 0 ? "+" : "−"}
               {formatNok(Math.abs(first.priceNok - curPrice))})
             </span>

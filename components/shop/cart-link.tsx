@@ -10,7 +10,7 @@ export function CartLink() {
   return (
     <Link
       href="/handlekurv"
-      className="relative inline-flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 text-sm font-medium hover:border-primary"
+      className="relative inline-flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 text-sm font-medium transition-shadow hover:shadow-sm"
       aria-label={n ? `Handlekurv, ${n} deler` : "Handlekurv"}
     >
       <ShoppingBag aria-hidden className="size-4" />

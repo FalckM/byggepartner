@@ -1,100 +1,71 @@
 import Link from "next/link";
-import { ArrowRight, PackageCheck, ShieldCheck, Wrench, Workflow } from "lucide-react";
+import { Compass, Hammer, TrendingUp, type LucideIcon } from "lucide-react";
+import { RULES } from "@/lib/engine/rules";
 
-// DP1, DP4 — Landing page (spec 9.3): two entries, three trust points.
+// DP1, DP4 — Front page for the demo: who we are, what the prototype is, and the three ways in.
 export default function Home() {
   return (
-    <main>
-      <section className="relative overflow-hidden border-b bg-blueprint">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.2fr_1fr] md:py-20">
-          <div className="space-y-6">
-            <p className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-sm">
-              <Workflow aria-hidden className="size-4 text-primary" /> Din digitale byggepartner
-            </p>
-            <h1 className="text-4xl leading-[1.05] font-semibold text-balance sm:text-5xl md:text-6xl">
-              Få en PC som passer – uten å kunne alt om PC-deler.
-            </h1>
-            <p className="max-w-prose text-lg text-muted-foreground">
-              Fortell oss budsjettet og hva du skal bruke PC-en til. Vi setter sammen en komplett maskin der vi har sjekket at
-              alt passer – før du betaler.
-            </p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/veiviser"
-                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm transition hover:shadow-md"
-              >
-                Hjelp meg å velge <ArrowRight aria-hidden className="size-5 transition group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                href="/bygg"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border bg-card px-6 text-base font-medium hover:border-primary"
-              >
-                Jeg vil bygge selv
-              </Link>
-            </div>
-          </div>
-          <StampIllustration />
-        </div>
+    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-6 lg:py-16">
+      <section className="max-w-2xl">
+        <p className="text-sm font-semibold text-muted-foreground">Studentprototype · IS-219 · Universitetet i Agder</p>
+        <h1 className="mt-2 text-[28px] leading-tight font-bold text-balance">Byggepartner – en prototype for Multicom</h1>
+        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+          Vi er Gruppe 20 ved UiA. Prototypen viser hvordan en kunde uten teknisk kunnskap kan få en komplett PC der alle delene
+          garantert passer sammen – før kunden betaler.
+        </p>
       </section>
 
-      <section aria-labelledby="trust" className="mx-auto max-w-6xl px-4 py-14">
-        <h2 id="trust" className="sr-only">
-          Derfor kan du være trygg
+      <section aria-labelledby="try" className="mt-12">
+        <h2 id="try" className="text-[22px] font-semibold">
+          Prøv prototypen
         </h2>
-        <ul className="grid gap-4 md:grid-cols-3">
-          <Trust icon={<ShieldCheck className="size-6" />} title="Alt sjekkes automatisk">
-            Vi sjekker at delene passer fysisk, har nok strøm og riktige kabler. Du kan ikke velge noe som ikke passer.
-          </Trust>
-          <Trust icon={<PackageCheck className="size-6" />} title="Ingenting mangler">
-            Kjøler, Windows og kjølepasta kommer med når du trenger dem – ingen ubehagelige overraskelser.
-          </Trust>
-          <Trust icon={<Wrench className="size-6" />} title="Kompatibilitetsgaranti">
-            Passer delene i pakken ikke sammen, bytter vi dem kostnadsfritt. Vil du heller slippe å bygge, monterer vi den.
-          </Trust>
+        <ul className="mt-5 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          <Entry href="/veiviser" icon={Compass} title="Hjelp meg å velge">
+            Svar på noen enkle spørsmål om budsjett og bruk, og få tre ferdige pakker.
+          </Entry>
+          <Entry href="/bygg" icon={Hammer} title="Bygg selv">
+            Velg én del om gangen og se PC-en fylles ut, mens vi sjekker at alt passer.
+          </Entry>
+          <Entry href="/oppgrader" icon={TrendingUp} title="Oppgrader">
+            Fortell hva du har fra før, og få forslag til hva som gir mest for pengene.
+          </Entry>
         </ul>
+      </section>
+
+      <section aria-labelledby="about" className="mt-16 grid gap-8 border-t pt-10 md:grid-cols-3">
+        <h2 id="about" className="text-[22px] font-semibold">
+          Om prototypen
+        </h2>
+        <Fact title="Ekte kompatibilitetssjekk">
+          {RULES.length} regler kjøres hver gang noe endres: fysisk plass, strøm, kabler og at ingenting mangler.
+        </Fact>
+        <Fact title="Demo-data">
+          Priser, lagerstatus og ytelsestall er laget for testing. Merkenavn utenom prosessorer, skjermkort og Windows er fiktive.
+        </Fact>
       </section>
     </main>
   );
 }
 
-function Trust({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
+function Entry({ href, icon: Icon, title, children }: { href: "/veiviser" | "/bygg" | "/oppgrader"; icon: LucideIcon; title: string; children: React.ReactNode }) {
   return (
-    <li className="rounded-2xl border bg-card p-6">
-      <span aria-hidden className="grid size-11 place-items-center rounded-xl bg-secondary text-secondary-foreground">
-        {icon}
-      </span>
-      <h3 className="mt-4 text-xl font-semibold">{title}</h3>
-      <p className="mt-1 text-muted-foreground">{children}</p>
+    <li>
+      <Link href={href} className="group block rounded-2xl outline-offset-4">
+        <span className="grid aspect-[16/9] place-items-center sm:aspect-[4/3] overflow-hidden rounded-2xl bg-muted transition-shadow group-hover:shadow-sm">
+          <Icon aria-hidden strokeWidth={1.25} className="size-24 text-primary transition-transform duration-300 group-hover:scale-105" />
+        </span>
+        <span className="mt-3 block font-semibold">{title}</span>
+        <span className="mt-0.5 block text-sm text-muted-foreground">{children}</span>
+      </Link>
     </li>
   );
 }
 
-/** Decorative: a packing slip with the green stamp – the product promise in one picture. */
-function StampIllustration() {
-  const rows = [
-    ["Prosessor", "6 kjerner"],
-    ["Skjermkort", "16 GB"],
-    ["Minne", "32 GB"],
-    ["Lagring", "1 TB"],
-    ["Strøm", "650 W"],
-  ];
+function Fact({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div aria-hidden className="relative mx-auto w-full max-w-sm self-center">
-      <div className="rotate-[-2deg] rounded-2xl border bg-card p-6 shadow-[0_20px_50px_-20px_oklch(0.3_0.08_258/0.35)]">
-        <p className="font-heading text-sm font-semibold tracking-wide text-muted-foreground uppercase">Din pakke · 13 990 kr</p>
-        <ul className="mt-4 space-y-2.5 text-sm">
-          {rows.map(([a, b]) => (
-            <li key={a} className="flex items-center justify-between border-b border-dashed pb-2">
-              <span>{a}</span>
-              <span className="font-medium">{b}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="absolute -right-3 -bottom-6 rotate-[8deg] rounded-xl border-[3px] border-ok bg-card/95 px-4 py-2 text-center shadow-sm sm:-right-6">
-        <p className="font-heading text-lg leading-tight font-bold text-ok">ALT PASSER</p>
-        <p className="font-heading text-xs font-semibold tracking-[0.2em] text-ok">SAMMEN ✓</p>
-      </div>
+    <div>
+      <h3 className="font-semibold">{title}</h3>
+      <p className="mt-1 text-sm text-muted-foreground">{children}</p>
     </div>
   );
 }

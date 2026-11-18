@@ -88,7 +88,7 @@ export function Checkout({ catalog }: { catalog: Catalog }) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Kasse</h1>
+      <h1 className="text-[28px] leading-tight font-bold">Kasse</h1>
       <p className="flex items-center gap-2 rounded-xl border bg-ok-soft p-3 text-sm">
         <ShieldCheck aria-hidden className="size-5 text-ok" /> Alt passer sammen – {formatNok(report.totalNok)}
       </p>

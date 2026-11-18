@@ -189,7 +189,7 @@ export function Wizard({ games }: { games: GameLite[] }) {
                     aria-pressed={budget === q}
                     className={cn(
                       "min-h-11 rounded-full border px-4 text-sm font-medium tabular-nums",
-                      budget === q ? "border-primary bg-primary text-primary-foreground" : "bg-background hover:border-primary",
+                      budget === q ? "border-foreground bg-foreground text-background" : "bg-background hover:border-foreground",
                     )}
                   >
                     {formatNok(q)}
@@ -361,7 +361,7 @@ export function Wizard({ games }: { games: GameLite[] }) {
 function StepHeading({ ref, title, sub }: { ref: React.Ref<HTMLHeadingElement>; title: string; sub: string }) {
   return (
     <div>
-      <h1 ref={ref} tabIndex={-1} className="text-3xl font-semibold outline-none sm:text-4xl">
+      <h1 ref={ref} tabIndex={-1} className="text-[28px] leading-tight font-bold outline-none">
         {title}
       </h1>
       <p className="mt-2 text-muted-foreground">{sub}</p>
@@ -390,7 +390,7 @@ function ChoiceCard({
     <label
       className={cn(
         "relative flex min-h-16 cursor-pointer flex-col justify-center gap-1 rounded-2xl border-2 bg-card p-4 transition has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring",
-        checked ? "border-primary bg-secondary" : "border-border hover:border-primary/50",
+        checked ? "border-foreground bg-muted" : "border-border hover:border-foreground/50",
       )}
     >
       {/* Invisible but full-size input: the whole card is the click target, semantics stay native. */}
@@ -418,7 +418,7 @@ function CheckCard({ checked, onChange, label, hint, icon }: { checked: boolean;
     <label
       className={cn(
         "flex min-h-16 cursor-pointer items-center gap-3 rounded-2xl border-2 bg-card p-4 transition has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring",
-        checked ? "border-primary bg-secondary" : "border-border hover:border-primary/50",
+        checked ? "border-foreground bg-muted" : "border-border hover:border-foreground/50",
       )}
     >
       <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-[var(--primary)]" />

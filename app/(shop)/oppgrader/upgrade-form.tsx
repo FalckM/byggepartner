@@ -70,7 +70,7 @@ export function UpgradeForm({ parts, games }: { parts: Part[]; games: { slug: st
   return (
     <form onSubmit={submit} className="space-y-8">
       <div>
-        <h1 className="text-3xl font-semibold sm:text-4xl">Oppgrader PC-en du har</h1>
+        <h1 className="text-[28px] leading-tight font-bold">Oppgrader PC-en du har</h1>
         <p className="mt-2 text-muted-foreground">
           Fortell oss hva du har i dag, så foreslår vi nye deler som garantert passer med resten. Du betaler bare for det nye.
         </p>
@@ -120,7 +120,7 @@ export function UpgradeForm({ parts, games }: { parts: Part[]; games: { slug: st
         <legend className="px-1 font-heading text-lg font-semibold">2. Hva vil du oppgradere?</legend>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {CATS.map((c) => (
-            <label key={c} className="flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border px-3 has-[:checked]:border-primary has-[:checked]:bg-secondary">
+            <label key={c} className="flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border px-3 has-[:checked]:border-foreground has-[:checked]:ring-1 has-[:checked]:ring-foreground has-[:checked]:bg-secondary">
               <input
                 type="checkbox"
                 checked={upgrade.includes(c)}
@@ -149,7 +149,7 @@ export function UpgradeForm({ parts, games }: { parts: Part[]; games: { slug: st
         </div>
         <div className="flex flex-wrap gap-2" role="group" aria-label="Spillene dine">
           {games.map((g) => (
-            <label key={g.slug} className="flex min-h-10 cursor-pointer items-center gap-2 rounded-full border px-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-secondary">
+            <label key={g.slug} className="flex min-h-10 cursor-pointer items-center gap-2 rounded-full border px-3 text-sm has-[:checked]:border-foreground has-[:checked]:ring-1 has-[:checked]:ring-foreground has-[:checked]:bg-secondary">
               <input
                 type="checkbox"
                 checked={chosenGames.includes(g.slug)}

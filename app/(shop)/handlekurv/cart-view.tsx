@@ -70,7 +70,7 @@ export function CartView({ catalog }: { catalog: Catalog }) {
 
   return (
     <div className="space-y-6 pb-24 lg:pb-0">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Handlekurv</h1>
+      <h1 className="text-[28px] leading-tight font-bold">Handlekurv</h1>
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <div className="space-y-6">
           <FitStamp report={report} totalRules={RULES.length} onShowChecks={() => setShowChecks(!showChecks)} />
@@ -140,7 +140,7 @@ export function CartView({ catalog }: { catalog: Catalog }) {
             </span>
           </label>
 
-          <div className="rounded-2xl border-2 border-dashed border-primary/40 bg-card p-4" data-testid="guarantee">
+          <div className="rounded-2xl border bg-card p-4 shadow-sm" data-testid="guarantee">
             <p className="flex items-center gap-2 font-semibold">
               <ShieldCheck aria-hidden className="size-5 text-primary" /> Kompatibilitetsgaranti
             </p>

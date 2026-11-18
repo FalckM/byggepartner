@@ -6,10 +6,10 @@ export function PrototypeBanner() {
     <div
       role="note"
       aria-label="Om denne nettsiden"
-      className="border-b border-warn/40 bg-warn-soft px-4 py-2 text-center text-sm text-foreground"
+      className="bg-muted px-4 py-2 text-center text-[13px] text-muted-foreground"
     >
       <FlaskConical aria-hidden className="mr-1.5 inline size-4 align-[-3px]" />
-      <strong>Studentprototype (IS-219, UiA)</strong> – ikke en offisiell Multicom-tjeneste. Priser og data er
+      <strong className="font-semibold text-foreground">Studentprototype (IS-219, UiA)</strong> – ikke en offisiell Multicom-tjeneste. Priser og data er
       demo-data.
     </div>
   );

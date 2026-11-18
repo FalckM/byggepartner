@@ -43,7 +43,7 @@ async function Loader({ params }: Pick<PageProps<"/bekreftelse/[id]">, "params">
     <div className="space-y-8">
       <header className="space-y-2 text-center">
         <PackageCheck aria-hidden className="mx-auto size-12 text-primary" />
-        <h1 className="text-3xl font-semibold sm:text-4xl">Takk! Bestillingen er registrert</h1>
+        <h1 className="text-[28px] leading-tight font-bold">Takk! Bestillingen er registrert</h1>
         <p className="text-muted-foreground">
           Ordrenummer <strong className="font-mono" data-testid="order-id">{order.id}</strong> · {date} · Simulert – ingen betaling er trukket.
         </p>

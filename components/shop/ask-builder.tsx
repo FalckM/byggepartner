@@ -43,7 +43,7 @@ export function AskBuilder({ items, catalog, report, needs, className }: { items
                   key={q.id}
                   type="button"
                   onClick={() => setLog((l) => [...l, { from: "you", text: q.question }, { from: "builder", text: q.answer }])}
-                  className="min-h-10 rounded-full border bg-card px-3 text-left text-sm hover:border-primary"
+                  className="min-h-10 rounded-full border bg-card px-3 text-left text-sm transition-colors hover:border-foreground"
                 >
                   {q.question}
                 </button>
