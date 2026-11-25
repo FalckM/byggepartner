@@ -1,0 +1,18 @@
+[
+  {"id":"cs2","slug":"cs2","name":"Counter-Strike 2","genre":"Skyting (e-sport)","gpuWeight":0.4,"cpuWeight":0.8,"baseFps":{"1080p":300,"1440p":230,"2160p":140},"esports":true},
+  {"id":"valorant","slug":"valorant","name":"Valorant","genre":"Skyting (e-sport)","gpuWeight":0.3,"cpuWeight":0.85,"baseFps":{"1080p":450,"1440p":380,"2160p":250},"esports":true},
+  {"id":"fortnite","slug":"fortnite","name":"Fortnite","genre":"Battle royale","gpuWeight":0.6,"cpuWeight":0.5,"baseFps":{"1080p":160,"1440p":120,"2160p":70},"esports":true},
+  {"id":"league-of-legends","slug":"league-of-legends","name":"League of Legends","genre":"Strategi (MOBA)","gpuWeight":0.2,"cpuWeight":0.8,"baseFps":{"1080p":400,"1440p":350,"2160p":250},"esports":true},
+  {"id":"minecraft","slug":"minecraft","name":"Minecraft","genre":"Sandkasse","gpuWeight":0.3,"cpuWeight":0.8,"baseFps":{"1080p":250,"1440p":220,"2160p":160},"esports":false},
+  {"id":"ea-fc","slug":"ea-fc","name":"EA Sports FC","genre":"Sport","gpuWeight":0.5,"cpuWeight":0.5,"baseFps":{"1080p":180,"1440p":150,"2160p":95},"esports":false},
+  {"id":"gta-v","slug":"gta-v","name":"GTA V","genre":"Action/åpen verden","gpuWeight":0.5,"cpuWeight":0.6,"baseFps":{"1080p":160,"1440p":130,"2160p":80},"fpsCap":187,"esports":false},
+  {"id":"cyberpunk-2077","slug":"cyberpunk-2077","name":"Cyberpunk 2077","genre":"Rollespill/åpen verden","gpuWeight":0.9,"cpuWeight":0.4,"baseFps":{"1080p":85,"1440p":58,"2160p":30},"esports":false},
+  {"id":"elden-ring","slug":"elden-ring","name":"Elden Ring","genre":"Action-rollespill","gpuWeight":0.8,"cpuWeight":0.4,"baseFps":{"1080p":95,"1440p":75,"2160p":45},"fpsCap":60,"esports":false},
+  {"id":"call-of-duty","slug":"call-of-duty","name":"Call of Duty","genre":"Skyting","gpuWeight":0.7,"cpuWeight":0.5,"baseFps":{"1080p":140,"1440p":105,"2160p":60},"esports":false},
+  {"id":"baldurs-gate-3","slug":"baldurs-gate-3","name":"Baldur's Gate 3","genre":"Rollespill","gpuWeight":0.7,"cpuWeight":0.6,"baseFps":{"1080p":110,"1440p":85,"2160p":48},"esports":false},
+  {"id":"apex-legends","slug":"apex-legends","name":"Apex Legends","genre":"Battle royale","gpuWeight":0.6,"cpuWeight":0.6,"baseFps":{"1080p":200,"1440p":150,"2160p":85},"fpsCap":300,"esports":true},
+  {"id":"rocket-league","slug":"rocket-league","name":"Rocket League","genre":"Sport (e-sport)","gpuWeight":0.4,"cpuWeight":0.7,"baseFps":{"1080p":350,"1440p":280,"2160p":170},"esports":true},
+  {"id":"overwatch-2","slug":"overwatch-2","name":"Overwatch 2","genre":"Skyting (e-sport)","gpuWeight":0.6,"cpuWeight":0.6,"baseFps":{"1080p":260,"1440p":190,"2160p":105},"fpsCap":600,"esports":true},
+  {"id":"roblox","slug":"roblox","name":"Roblox","genre":"Sandkasse","gpuWeight":0.3,"cpuWeight":0.7,"baseFps":{"1080p":240,"1440p":200,"2160p":140},"esports":false},
+  {"id":"the-sims-4","slug":"the-sims-4","name":"The Sims 4","genre":"Simulering","gpuWeight":0.4,"cpuWeight":0.6,"baseFps":{"1080p":160,"1440p":130,"2160p":90},"esports":false}
+]

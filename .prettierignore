@@ -1,0 +1,3 @@
+lib/generated
+pnpm-lock.yaml
+seed/**/*.json

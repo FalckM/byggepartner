@@ -1,0 +1,163 @@
+[
+  {
+    "id": "S01",
+    "basedOn": "RESP-03 / Sander",
+    "description": "14 000 kr, Spill + Studier, CS2 + Fortnite, 1080p 144 Hz, Windows ja",
+    "kind": "GENERATE",
+    "needs": {"budgetNok":14000,"includeOs":true,"uses":["GAMING","STUDY"],"games":["cs2","fortnite"],"resolution":"1080p","targetHz":144,"preferences":{},"longevityYears":5,"assemblyService":false},
+    "expect": {"packages":3,"ok":true,"recommendedMaxNok":14000,"minFps":[{"game":"cs2","resolution":"1080p","fps":144}]}
+  },
+  {
+    "id": "S02",
+    "basedOn": "RESP-05 (mor, konfirmasjon)",
+    "description": "10 000 kr, Spill, «Vet ikke», 1080p 60 Hz",
+    "kind": "GENERATE",
+    "needs": {"budgetNok":10000,"includeOs":true,"uses":["GAMING"],"games":[],"resolution":"1080p","targetHz":60,"preferences":{},"longevityYears":3,"assemblyService":false},
+    "expect": {"ok":true,"recommendedMaxNok":10000,"checklistPresent":["OS"],"noJargon":true}
+  },
+  {
+    "id": "S03",
+    "basedOn": "RESP-06 (lavbudsjett)",
+    "description": "12 000 kr, Studier + litt spill",
+    "kind": "GENERATE",
+    "needs": {"budgetNok":12000,"includeOs":true,"uses":["STUDY","GAMING"],"games":["league-of-legends"],"resolution":"1080p","targetHz":60,"preferences":{},"longevityYears":3,"assemblyService":false},
+    "expect": {"ok":true,"recommendedMaxNok":12000,"checklistPresent":["COOLER","OS"]}
+  },
+  {
+    "id": "S04",
+    "basedOn": "RESP-04 (GPU for lang)",
+    "description": "Manuell build: 340 mm GPU + 290 mm-kabinett",
+    "kind": "VALIDATE",
+    "items": [
+      {"category":"CPU","componentId":"cpu-amd-ryzen-5-7600","qty":1},
+      {"category":"MOTHERBOARD","componentId":"mb-b850m-wifi","qty":1},
+      {"category":"RAM","componentId":"ram-ddr5-32-6000","qty":1},
+      {"category":"GPU","componentId":"gpu-rtx-5070-ti-titan-oc","qty":1},
+      {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4","qty":1},
+      {"category":"PSU","componentId":"psu-850-gold-atx31","qty":1},
+      {"category":"CASE","componentId":"case-compact-m1-matx","qty":1},
+      {"category":"OS","componentId":"os-windows-11-home","qty":1}
+    ],
+    "expect": {"ok":false,"errorRules":["R03_GPU_LENGTH"],"hasFixSuggestion":true}
+  },
+  {
+    "id": "S05",
+    "basedOn": "RESP-02 (strøm)",
+    "description": "Manuell build: RTX 5070 Ti + 450 W PSU",
+    "kind": "VALIDATE",
+    "items": [
+      {"category":"CPU","componentId":"cpu-amd-ryzen-7-9800x3d","qty":1},
+      {"category":"MOTHERBOARD","componentId":"mb-b650-atx-wifi","qty":1},
+      {"category":"RAM","componentId":"ram-ddr5-32-6000","qty":1},
+      {"category":"GPU","componentId":"gpu-rtx-5070-ti-sff","qty":1},
+      {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4","qty":1},
+      {"category":"PSU","componentId":"psu-basic-450-bronze","qty":1},
+      {"category":"CASE","componentId":"case-midtower-mesh","qty":1},
+      {"category":"COOLER","componentId":"cooler-single-tower-155","qty":1},
+      {"category":"OS","componentId":"os-windows-11-home","qty":1}
+    ],
+    "expect": {"ok":false,"errorRules":["R10_PSU_WATTAGE","R11_PSU_CONNECTORS"]}
+  },
+  {
+    "id": "S06",
+    "basedOn": "Sokkel",
+    "description": "Ryzen 7600 + B760-kort",
+    "kind": "VALIDATE",
+    "items": [
+      {"category":"CPU","componentId":"cpu-amd-ryzen-5-7600","qty":1},
+      {"category":"MOTHERBOARD","componentId":"mb-b760m-ddr5-wifi","qty":1},
+      {"category":"RAM","componentId":"ram-ddr5-32-5600","qty":1},
+      {"category":"GPU","componentId":"gpu-rtx-5060-compact","qty":1},
+      {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4","qty":1},
+      {"category":"PSU","componentId":"psu-650-gold-atx31","qty":1},
+      {"category":"CASE","componentId":"case-micro-airflow-matx","qty":1},
+      {"category":"OS","componentId":"os-windows-11-home","qty":1}
+    ],
+    "expect": {"ok":false,"errorRules":["R01_SOCKET"]}
+  },
+  {
+    "id": "S07",
+    "basedOn": "Minne",
+    "description": "DDR4-RAM + B650-kort",
+    "kind": "VALIDATE",
+    "items": [
+      {"category":"CPU","componentId":"cpu-amd-ryzen-5-7600","qty":1},
+      {"category":"MOTHERBOARD","componentId":"mb-b650-atx-wifi","qty":1},
+      {"category":"RAM","componentId":"ram-ddr4-32-3200","qty":1},
+      {"category":"GPU","componentId":"gpu-rtx-5060-compact","qty":1},
+      {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4","qty":1},
+      {"category":"PSU","componentId":"psu-650-gold-atx31","qty":1},
+      {"category":"CASE","componentId":"case-midtower-mesh","qty":1},
+      {"category":"OS","componentId":"os-windows-11-home","qty":1}
+    ],
+    "expect": {"ok":false,"errorRules":["R02_MEMORY_TYPE"]}
+  },
+  {
+    "id": "S08",
+    "basedOn": "Mangler kjøler (RESP-06)",
+    "description": "i5-14600K uten kjøler",
+    "kind": "VALIDATE",
+    "items": [
+      {"category":"CPU","componentId":"cpu-intel-core-i5-14600k","qty":1},
+      {"category":"MOTHERBOARD","componentId":"mb-z790-atx-wifi","qty":1},
+      {"category":"RAM","componentId":"ram-ddr5-32-6000","qty":1},
+      {"category":"GPU","componentId":"gpu-rtx-5070-compact","qty":1},
+      {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4","qty":1},
+      {"category":"PSU","componentId":"psu-750-gold-atx31","qty":1},
+      {"category":"CASE","componentId":"case-midtower-mesh","qty":1},
+      {"category":"OS","componentId":"os-windows-11-home","qty":1}
+    ],
+    "expect": {"ok":false,"checklistMissing":["COOLER"]}
+  },
+  {
+    "id": "S09",
+    "basedOn": "BIOS",
+    "description": "Ryzen 9800X3D + eldre B650",
+    "kind": "VALIDATE",
+    "items": [
+      {"category":"CPU","componentId":"cpu-amd-ryzen-7-9800x3d","qty":1},
+      {"category":"MOTHERBOARD","componentId":"mb-b650m-legacy-bios","qty":1},
+      {"category":"RAM","componentId":"ram-ddr5-32-6000","qty":1},
+      {"category":"GPU","componentId":"gpu-rtx-5070-compact","qty":1},
+      {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4","qty":1},
+      {"category":"PSU","componentId":"psu-750-gold-atx31","qty":1},
+      {"category":"CASE","componentId":"case-micro-airflow-matx","qty":1},
+      {"category":"COOLER","componentId":"cooler-single-tower-148-rgb","qty":1},
+      {"category":"OS","componentId":"os-windows-11-home","qty":1}
+    ],
+    "expect": {"ok":true,"warningRules":["R16_BIOS"]}
+  },
+  {
+    "id": "S10",
+    "basedOn": "Lavt budsjett",
+    "description": "4 000 kr spill",
+    "kind": "GENERATE",
+    "needs": {"budgetNok":4000,"includeOs":true,"uses":["GAMING"],"games":["fortnite"],"resolution":"1080p","targetHz":60,"preferences":{},"longevityYears":3,"assemblyService":false},
+    "expect": {"reason":"BUDGET_TOO_LOW"}
+  },
+  {
+    "id": "S11",
+    "basedOn": "RESP-07 oppgradering",
+    "description": "Eksisterende: AM4 + B550 + DDR4 + 550 W, budsjett 6 000, oppgrader GPU",
+    "kind": "UPGRADE",
+    "needs": {"budgetNok":6000,"includeOs":false,"uses":["GAMING"],"games":["fortnite","cs2"],"resolution":"1080p","targetHz":144,"preferences":{},"longevityYears":3,"assemblyService":false,
+      "existingParts":[
+        {"category":"CPU","componentId":"cpu-amd-ryzen-5-5600"},
+        {"category":"MOTHERBOARD","componentId":"mb-b550-atx"},
+        {"category":"RAM","componentId":"ram-ddr4-16-3200"},
+        {"category":"PSU","componentId":"psu-550-bronze"},
+        {"category":"CASE","componentId":"case-budget-atx-airflow"},
+        {"category":"STORAGE","componentId":"ssd-nvme-1tb-gen4"}
+      ]},
+    "upgradeCategories": ["GPU"],
+    "expect": {"ok":true}
+  },
+  {
+    "id": "S12",
+    "basedOn": "4K entusiast",
+    "description": "35 000 kr, Cyberpunk, 2160p",
+    "kind": "GENERATE",
+    "needs": {"budgetNok":35000,"includeOs":true,"uses":["GAMING"],"games":["cyberpunk-2077"],"resolution":"2160p","targetHz":60,"preferences":{},"longevityYears":5,"assemblyService":false},
+    "expect": {"ok":true,"recommendedMaxNok":35000,"gpuShareMin":0.35}
+  }
+]

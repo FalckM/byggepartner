@@ -1,0 +1,4 @@
+[
+  {"id":"os-windows-11-home","category":"OS","brand":"Microsoft","name":"Windows 11 Home (digital lisens)","priceNok":1490,"stock":"IN_STOCK","deliveryDays":0,"plainSummary":"Operativsystemet – programmet som får PC-en til å virke. Det de fleste trenger hjemme.","isDemoData":true,"specs":{"name":"Windows 11 Home","licenseType":"DIGITAL"}},
+  {"id":"os-windows-11-pro","category":"OS","brand":"Microsoft","name":"Windows 11 Pro (digital lisens)","priceNok":2190,"stock":"IN_STOCK","deliveryDays":0,"plainSummary":"Operativsystemet – programmet som får PC-en til å virke. Med ekstra funksjoner for jobb og programmering.","isDemoData":true,"specs":{"name":"Windows 11 Pro","licenseType":"DIGITAL"}}
+]

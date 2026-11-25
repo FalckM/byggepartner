@@ -1,0 +1,130 @@
+// Byggepartner – datamodell. Kategori-spesifikke felt ligger i
+// Component.specs (JSON) og valideres med Zod i lib/engine/types.ts.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Category {
+  CPU
+  MOTHERBOARD
+  RAM
+  GPU
+  STORAGE
+  PSU
+  CASE
+  COOLER
+  OS
+  ACCESSORY
+}
+
+enum Stock {
+  IN_STOCK
+  LOW
+  ORDER
+  OUT
+}
+
+enum BuildTier {
+  SAVE
+  RECOMMENDED
+  PERFORMANCE
+  CUSTOM
+  UPGRADE
+}
+
+enum OrderStatus {
+  SIMULATED
+}
+
+model Component {
+  id                      String   @id
+  category                Category
+  brand                   String
+  name                    String
+  priceNok                Int
+  stock                   Stock
+  deliveryDays            Int
+  imageUrl                String?
+  plainSummary            String
+  tierLabel               String?
+  specs                   Json
+  source                  String   @default("seed")
+  isDemoData              Boolean  @default(true)
+  incompleteForValidation Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([category, priceNok])
+  @@index([source])
+}
+
+model Game {
+  id        String  @id
+  slug      String  @unique
+  name      String
+  iconUrl   String?
+  genre     String
+  gpuWeight Float
+  cpuWeight Float
+  baseFps   Json
+  fpsCap    Int?
+  esports   Boolean
+}
+
+model Build {
+  id              String    @id
+  createdAt       DateTime  @default(now())
+  needs           Json?
+  tier            BuildTier
+  items           Json
+  totalNok        Int
+  validation      Json?
+  assemblyService Boolean   @default(false)
+  orders          Order[]
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  buildId     String
+  build       Build       @relation(fields: [buildId], references: [id])
+  createdAt   DateTime    @default(now())
+  totalNok    Int
+  status      OrderStatus @default(SIMULATED)
+  anonymousId String?
+
+  @@index([buildId])
+}
+
+model TestSession {
+  id              String    @id @default(cuid())
+  participantCode String
+  segment         String
+  taskDescription String
+  startedAt       DateTime  @default(now())
+  finishedAt      DateTime?
+  completed       Boolean   @default(false)
+  confidenceScore Int?
+  notes           String?
+  events          Event[]
+
+  @@index([participantCode])
+}
+
+model Event {
+  id          String       @id @default(cuid())
+  sessionId   String?
+  session     TestSession? @relation(fields: [sessionId], references: [id])
+  anonymousId String
+  type        String
+  payload     Json
+  ts          DateTime     @default(now())
+
+  @@index([type, ts])
+  @@index([sessionId])
+}
